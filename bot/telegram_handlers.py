@@ -54,6 +54,43 @@ async def button_handler(update: Update, context: ContextTypes.DEFAULT_TYPE) -> 
         return
 
     if choice == "player":
+        keyboard = [
+            [
+                InlineKeyboardButton("Player Stats", callback_data="player_stats"),
+                InlineKeyboardButton("Hero Stats", callback_data="hero_stats"),
+                InlineKeyboardButton("Achievements", callback_data="achievements"),
+            ]
+        ]
+        reply_markup = InlineKeyboardMarkup(keyboard)
+        await query.edit_message_text(text="Choose the information you want to see:", reply_markup=reply_markup)
+
+    elif choice == "achievements":
+        await query.edit_message_text(text="Fetching achievements...")
+        result = coc_api.get_player_info(tag)
+        
+        if result["success"]:
+            data = result["data"]
+            achievements = data.get("achievements", [])
+            
+            if not achievements:
+                await query.message.reply_text("No achievement information available.", parse_mode="Markdown")
+            else:
+                msg = "🏆 *Achievements*\n\n"
+                for achievement in achievements:
+                    name = achievement.get("name", "Unknown")
+                    stars = achievement.get("stars", 0)
+                    value = achievement.get("value", 0)
+                    target = achievement.get("target", 0)
+                    
+                    msg += f"*{name}*\n"
+                    msg += f"Stars: {stars}\n"
+                    msg += f"Progress: {value}/{target}\n\n"
+                
+                await query.message.reply_text(msg, parse_mode="Markdown")
+        else:
+            await query.message.reply_text(f" {result['error']}")
+            
+    elif choice == "player_stats":
         await query.edit_message_text(text="Fetching player info...")
         result = coc_api.get_player_info(tag)
         
@@ -81,6 +118,31 @@ async def button_handler(update: Update, context: ContextTypes.DEFAULT_TYPE) -> 
                 f"Builder Base Trophies: {buildertrophies}\n"
             )
             await query.message.reply_text(msg, parse_mode="Markdown")
+        else:
+            await query.message.reply_text(f" {result['error']}")
+
+    elif choice == "hero_stats":
+        await query.edit_message_text(text="Fetching hero info...")
+        result = coc_api.get_player_info(tag)
+        
+        if result["success"]:
+            data = result["data"]
+            heroes = data.get("heroes", [])
+            
+            if not heroes:
+                await query.message.reply_text("No hero information available.", parse_mode="Markdown")
+            else:
+                msg = "🦸 *Heroes*\n\n"
+                for hero in heroes:
+                    name = hero.get("name", "Unknown")
+                    level = hero.get("level", 0)
+                    max_level = hero.get("maxLevel", 0)
+                    village = hero.get("village", "home")
+                    
+                    msg += f"*{name}* ({village})\n"
+                    msg += f"Level: {level}/{max_level}\n\n"
+                
+                await query.message.reply_text(msg, parse_mode="Markdown")
         else:
             await query.message.reply_text(f" {result['error']}")
 
