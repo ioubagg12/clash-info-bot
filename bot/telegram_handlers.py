@@ -10,8 +10,7 @@ async def start(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
     welcome_message = (
         "Clash of Clans Info Bot!       Bunvenit Evreule \n\n"
         "Send me a tag (e.g. `#P2P2V80C0`) and choose if it's a Player or Clan.\n\n"
-        "Commands:\n"
-        "/start - Show this message\n"
+        "You can get information about players, clans, heroes, and achievements."
     )
     await update.message.reply_text(welcome_message, parse_mode="Markdown")
 
@@ -89,7 +88,7 @@ async def button_handler(update: Update, context: ContextTypes.DEFAULT_TYPE) -> 
                 await query.message.reply_text(msg, parse_mode="Markdown")
         else:
             await query.message.reply_text(f" {result['error']}")
-            
+
     elif choice == "player_stats":
         await query.edit_message_text(text="Fetching player info...")
         result = coc_api.get_player_info(tag)
