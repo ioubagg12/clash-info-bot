@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Clash of Clans Player Info</title>
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <div class="page">
+    <header>
+      <h1>Clash of Clans Player Info</h1>
+      <p>Enter your player tag to see your profile.</p>
+    </header>
+
+    <main>
+      <form id="player-form">
+        <label for="tag">Player Tag</label>
+        <input
+          type="text"
+          id="tag"
+          name="tag"
+          placeholder="#P2P2V80C0"
+          required
+        />
+        <button type="submit">Get Info</button>
+      </form>
+
+      <section id="result" class="card hidden">
+        <h2 id="player-name"></h2>
+        <p id="player-tag"></p>
+        <p id="player-th"></p>
+        <p id="player-trophies"></p>
+        <p id="player-clan"></p>
+      </section>
+
+      <section id="error" class="card error hidden"></section>
+    </main>
+
+    <footer>
+      <small>Built as a passion project with Python & HTML/CSS</small>
+    </footer>
+  </div>
+
+  <script src="script.js"></script>
+</body>
+</html>
