@@ -10,18 +10,32 @@ body {
   background: #050816;
   color: #f9fafb;
   display: flex;
-  justify-content: center;
-  align-items: center;
+  flex-direction: row; /* Stack items horizontally */
+  justify-content: flex-start;
+  align-items: flex-start;
   padding: 20px;
+  gap: 20px; /* Add space between the divs */
 }
 
 .page {
+ 
+  order: -1; /* Move this element to the top */
   width: 100%;
-  max-width: 700px;
+  max-width: 500px;
   background: #0b1120;
   border-radius: 16px;
   padding: 24px 28px 20px;
   box-shadow: 0 20px 40px rgba(0, 0, 0, 0.6);
+}
+
+.second-header {
+  text-align: left;
+  margin-bottom: 16px;
+  background: #0e165e;
+  padding: 20px;
+  border-radius: 16px;
+  width: 100%;
+  max-width: 500px;
 }
 
 header {

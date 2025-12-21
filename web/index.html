@@ -6,6 +6,47 @@
   <link rel="stylesheet" href="styles.css" />
 </head>
 <body>
+
+
+  <div class="second-header">
+    <header>
+      <h1>Clash of Clans Clans Info</h1>
+      <p>Enter your clan tag to see more information.</p>
+    </header>
+  <main>
+      <form id="clan-form">
+        <label for="clan-tag-input">Clan Tag</label>
+        <input
+          type="text"
+          id="clan-tag-input"
+          name="tag"
+          placeholder="#PQLG2QJV"
+          required
+        />
+        <button type="submit">Get Info</button>
+      </form>
+
+      <section id="clan-result" class="card hidden">
+        <h2 id="clan-name"></h2>
+        <p id="clan-tag"></p>
+        <p id="clan-level"></p>
+        <p id="clan-points"></p>
+        <p id="clan-members"></p>
+      </section>
+
+      <section id="clan-error" class="card error hidden"></section>
+    </main>
+
+    <footer>
+      <small>Built as a passion project with Python & HTML/CSS</small>
+    </footer>
+
+
+
+  </div>
+
+
+
   <div class="page">
     <header>
       <h1>Clash of Clans Player Info</h1>
@@ -14,10 +55,10 @@
 
     <main>
       <form id="player-form">
-        <label for="tag">Player Tag</label>
+        <label for="player-tag-input">Player Tag</label>
         <input
           type="text"
-          id="tag"
+          id="player-tag-input"
           name="tag"
           placeholder="#P2P2V80C0"
           required
@@ -25,7 +66,7 @@
         <button type="submit">Get Info</button>
       </form>
 
-      <section id="result" class="card hidden">
+      <section id="player-result" class="card hidden">
         <h2 id="player-name"></h2>
         <p id="player-tag"></p>
         <p id="player-th"></p>
@@ -33,13 +74,25 @@
         <p id="player-clan"></p>
       </section>
 
-      <section id="error" class="card error hidden"></section>
+      <section id="player-error" class="card error hidden"></section>
     </main>
 
     <footer>
       <small>Built as a passion project with Python & HTML/CSS</small>
     </footer>
   </div>
+
+
+
+
+
+
+
+
+
+
+
+
 
   <script src="script.js"></script>
 </body>
