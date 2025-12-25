@@ -17,3 +17,7 @@ Bot Name: @The_coc_caller_bot
    ```
    /start
    ```
+
+   Web app
+   ```
+5. In terminal : python api_server.py in order to run 

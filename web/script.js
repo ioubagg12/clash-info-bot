@@ -1,4 +1,4 @@
-// --- Player Info Section ---
+//  demo data for Player
 const playerForm = document.getElementById("player-form");
 const playerTagInput = document.getElementById("player-tag-input");
 const playerResultCard = document.getElementById("player-result");
@@ -10,7 +10,7 @@ const playerThEl = document.getElementById("player-th");
 const playerTrophiesEl = document.getElementById("player-trophies");
 const playerClanEl = document.getElementById("player-clan");
 
-playerForm.addEventListener("submit", (event) => {
+playerForm.addEventListener("submit", async (event) => {
   event.preventDefault();
 
   const rawTag = playerTagInput.value.trim();
@@ -19,28 +19,50 @@ playerForm.addEventListener("submit", (event) => {
     return;
   }
 
-  // Demo data for Player
   hidePlayerError();
-  showPlayerResult({
-    name: "Demo Player",
-    tag: rawTag.toUpperCase(),
-    townHallLevel: 13,
-    trophies: 5200,
-    clan: {
-      name: "Demo Clan"
-    }
-  });
-});
+  playerResultCard.classList.add("hidden");
 
-function showPlayerResult(data) {
-  playerNameEl.textContent = data.name;
-  playerTagEl.textContent = `Tag: ${data.tag}`;
-  playerThEl.textContent = `Town Hall: ${data.townHallLevel}`;
-  playerTrophiesEl.textContent = `Trophies: ${data.trophies}`;
-  playerClanEl.textContent = `Clan: ${data.clan?.name || "No clan"}`;
-
+  // Show a temporary loading message
+  playerNameEl.textContent = "Loading...";
+  playerTagEl.textContent = "";
+  playerThEl.textContent = "";
+  playerTrophiesEl.textContent = "";
+  playerClanEl.textContent = "";
   playerResultCard.classList.remove("hidden");
-}
+
+  try {
+    const url = "http://127.0.0.1:8000/player?tag=" + encodeURIComponent(rawTag);
+
+    const response = await fetch(url);
+    const data = await response.json();
+
+    if (!response.ok || !data.success) {
+      showPlayerError(data.error || "Failed to fetch player info.");
+      return;
+    }
+
+    const p = data.player;
+
+    playerNameEl.textContent = p.name || "Unknown";
+    playerTagEl.textContent = "Tag: " + (p.tag || rawTag.toUpperCase());
+    playerThEl.textContent = "Town Hall: " + (p.townHallLevel ?? "N/A");
+    playerTrophiesEl.textContent = "Trophies: " + (p.trophies ?? "N/A");
+
+    if (p.clan && p.clan.name) {
+      playerClanEl.textContent =
+        "Clan: " +
+        p.clan.name +
+        (p.clan.level ? " (Level " + p.clan.level + ")" : "");
+    } else {
+      playerClanEl.textContent = "Clan: No clan";
+    }
+
+    playerResultCard.classList.remove("hidden");
+  } catch (err) {
+    console.error(err);
+    showPlayerError("Error talking to the server. Is it running?");
+  }
+});
 
 function showPlayerError(message) {
   playerErrorCard.textContent = message;
@@ -53,7 +75,7 @@ function hidePlayerError() {
 }
 
 
-// --- Clan Info Section ---
+//  demo data for Clan
 const clanForm = document.getElementById("clan-form");
 const clanTagInput = document.getElementById("clan-tag-input");
 const clanResultCard = document.getElementById("clan-result");
@@ -65,7 +87,7 @@ const clanLevelEl = document.getElementById("clan-level");
 const clanPointsEl = document.getElementById("clan-points");
 const clanMembersEl = document.getElementById("clan-members");
 
-clanForm.addEventListener("submit", (event) => {
+clanForm.addEventListener("submit", async (event) => {
   event.preventDefault();
 
   const rawTag = clanTagInput.value.trim();
@@ -74,15 +96,34 @@ clanForm.addEventListener("submit", (event) => {
     return;
   }
 
-  // Demo data for Clan
   hideClanError();
-  showClanResult({
-    name: "Demo Clan",
-    tag: rawTag.toUpperCase(),
-    clanLevel: 15,
-    clanPoints: 45000,
-    members: 48
-  });
+  clanResultCard.classList.add("hidden");
+
+  // Show loading state
+  clanNameEl.textContent = "Loading...";
+  clanTagEl.textContent = "";
+  clanLevelEl.textContent = "";
+  clanPointsEl.textContent = "";
+  clanMembersEl.textContent = "";
+  clanResultCard.classList.remove("hidden");
+
+  try {
+    const url = "http://127.0.0.1:8000/clan?tag=" + encodeURIComponent(rawTag);
+
+    const response = await fetch(url);
+    const data = await response.json();
+
+    if (!response.ok || !data.success) {
+      showClanError(data.error || "Failed to fetch clan info.");
+      return;
+    }
+
+    showClanResult(data.clan);
+
+  } catch (err) {
+    console.error(err);
+    showClanError("Error talking to the server. Is it running?");
+  }
 });
 
 function showClanResult(data) {
